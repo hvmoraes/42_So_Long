@@ -36,7 +36,7 @@ void	enemy_gif(t_data *data, int flag)
 	int				i;
 
 	i = 0;
-	while (i < nbr_enemies(data))
+	while (i < data->num_enemies)
 	{
 		pos_x = data->enemy[i]->pixel_pos.x;
 		pos_y = data->enemy[i]->pixel_pos.y;
@@ -59,7 +59,7 @@ void	consumable(t_data *data)
 	int	i;
 
 	i = 0;
-	while (i < nbr_consumables(data))
+	while (i < data->num_consumables)
 	{
 		if (data->consumable[i]->print)
 		{
@@ -73,7 +73,7 @@ void	consumable(t_data *data)
 
 void	end_exit(t_data *data)
 {
-	if (data->pacman->nbr_consumables == nbr_consumables(data)
+	if (data->pacman->nbr_consumables == data->num_consumables
 		&& data->exit->print)
 		draw_square(data->exit->pixel_pos.x, data->exit->pixel_pos.y,
 			BLUE_PIXEL, data);
@@ -88,9 +88,10 @@ int	gif(t_data *data)
 	gettimeofday(&now, NULL);
 	elapsed_time = (now.tv_sec - data->pacman->last_gif.tv_sec) * 1000
 		+ (now.tv_usec - data->pacman->last_gif.tv_usec) / 1000;
-	vulnerable_time = (now.tv_sec - data->pacman->last_vulnerable.tv_sec) * 1000
+	vulnerable_time = (now.tv_sec - data->pacman->last_vulnerable.tv_sec)
+		* 1000
 		+ (now.tv_usec - data->pacman->last_vulnerable.tv_usec) / 1000;
-	if (vulnerable_time >= VULNERABLE || vulnerable_time < 0)
+	if (vulnerable_time >= VULNERABLE_DURATION || vulnerable_time < 0)
 		set_enemies_vulnerable(data, 1);
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	display_movements(data);

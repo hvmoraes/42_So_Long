@@ -29,17 +29,17 @@ int	die(t_data *data)
 int	invalid(t_data *data, int code)
 {
 	if (code == 0)
-		printf("Error.\nToo few Enemies or Consumables!\n");
+		printf("Error\nToo few Enemies or Consumables!\n");
 	else if (code == 1)
-		printf("Error.\nMore or less than 1 Player or Exit!\n");
+		printf("Error\nMore or less than 1 Player or Exit!\n");
 	else if (code == 2)
-		printf("Error.\nWrong map sizes!\n");
+		printf("Error\nWrong map sizes!\n");
 	else if (code == 3)
-		printf("Error.\nMap not closed!\n");
+		printf("Error\nMap not closed!\n");
 	else if (code == 4)
-		printf("Error.\nNo valid path\n");
+		printf("Error\nNo valid path\n");
 	else if (code == 5)
-		printf("Error.\nInvalid character\n");
+		printf("Error\nInvalid character\n");
 	clear_map(data);
 	exit(0);
 }

@@ -18,21 +18,21 @@ void	rand_nbr_enemy(t_data *data, int i)
 
 	nbr = rand() % 4;
 	if (nbr == 0 && !is_wall_enemy(data, -1, 0, i))
-		upgrade_pos_render_map_enemy(data, -50, 0, i);
+		upgrade_pos_render_map_enemy(data, -TILE_SIZE, 0, i);
 	else if (nbr == 1 && !is_wall_enemy(data, 1, 0, i))
-		upgrade_pos_render_map_enemy(data, 50, 0, i);
+		upgrade_pos_render_map_enemy(data, TILE_SIZE, 0, i);
 	else if (nbr == 2 && !is_wall_enemy(data, 0, 1, i))
-		upgrade_pos_render_map_enemy(data, 0, 50, i);
+		upgrade_pos_render_map_enemy(data, 0, TILE_SIZE, i);
 	else if (!is_wall_enemy(data, 0, -1, i))
-		upgrade_pos_render_map_enemy(data, 0, -50, i);
+		upgrade_pos_render_map_enemy(data, 0, -TILE_SIZE, i);
 }
 
 void	draw_render(t_data *data, int i, int j)
 {
 	if (data->map->lines[j][i] == '1')
-		draw_square(i * 50, j * 50, RED_PIXEL, data);
+		draw_square(i * TILE_SIZE, j * TILE_SIZE, RED_PIXEL, data);
 	else
-		draw_square(i * 50, j * 50, BLACK_PIXEL, data);
+		draw_square(i * TILE_SIZE, j * TILE_SIZE, BLACK_PIXEL, data);
 	if (data->map->lines[j][i] == 'P' && data->pacman->flag != 1)
 		render_pacman(data, i, j);
 	if (data->map->lines[j][i] == 'E' && data->exit->flag != 1)
@@ -41,7 +41,7 @@ void	draw_render(t_data *data, int i, int j)
 
 void	set_enemies_state(t_data *data, int i)
 {
-	while (++i < nbr_enemies(data))
+	while (++i < data->num_enemies)
 	{
 		if (data->pacman->curr_pos.x == data->enemy[i]->curr_pos.x
 			&& data->pacman->curr_pos.y == data->enemy[i]->curr_pos.y
@@ -58,18 +58,20 @@ void	set_enemies_state(t_data *data, int i)
 	}
 }
 
-void	nbr_enemies_consumables(t_data *data, int i, int j)
+void	handle_pacman_collisions(t_data *data)
 {
 	struct timeval	now;
+	int				j;
 
-	set_enemies_state(data, i);
-	while (++j < nbr_consumables(data))
+	set_enemies_state(data, -1);
+	j = -1;
+	while (++j < data->num_consumables)
 	{
 		if (data->pacman->curr_pos.x == data->consumable[j]->curr_pos.x
 			&& data->pacman->curr_pos.y == data->consumable[j]->curr_pos.y
 			&& data->consumable[j]->print)
 		{
-			if (data->pacman->nbr_consumables <= nbr_consumables(data))
+			if (data->pacman->nbr_consumables <= data->num_consumables)
 				data->pacman->nbr_consumables++;
 			data->consumable[j]->print = 0;
 			gettimeofday(&now, NULL);

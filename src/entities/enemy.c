@@ -15,9 +15,9 @@
 void	upgrade_pos_render_map_enemy(t_data *data, int x, int y, int i)
 {
 	data->enemy[i]->pixel_pos.x += x;
-	data->enemy[i]->curr_pos.x += x / 50;
+	data->enemy[i]->curr_pos.x += x / TILE_SIZE;
 	data->enemy[i]->pixel_pos.y += y;
-	data->enemy[i]->curr_pos.y += y / 50;
+	data->enemy[i]->curr_pos.y += y / TILE_SIZE;
 	render_map(data, -1, 0, 0);
 }
 
@@ -33,7 +33,7 @@ int	move_enemy(t_data *data)
 	i = -1;
 	if (elapsed_time >= ENEMY_FRAME_RATE || elapsed_time < 0)
 	{
-		while (++i < nbr_enemies(data))
+		while (++i < data->num_enemies)
 		{
 			rand_nbr_enemy(data, i);
 			if (data->enemy[i]->curr_pos.x == data->pacman->curr_pos.x
@@ -63,28 +63,5 @@ int	is_wall_enemy(t_data *data, int x, int y, int i)
 	pos_x = data->enemy[i]->curr_pos.x + x;
 	if (data->map->lines[pos_y][pos_x] == '1')
 		return (1);
-	else
-		return (0);
-}
-
-int	nbr_enemies(t_data *data)
-{
-	int	i;
-	int	j;
-	int	nbr_enemies;
-
-	j = 0;
-	nbr_enemies = 0;
-	while (data->map->lines[j])
-	{
-		i = 0;
-		while (data->map->lines[j][i])
-		{
-			if (data->map->lines[j][i] == 'X')
-				nbr_enemies++;
-			i++;
-		}
-		j++;
-	}
-	return (nbr_enemies);
+	return (0);
 }

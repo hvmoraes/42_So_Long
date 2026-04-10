@@ -22,29 +22,29 @@ LIBFT_DIR		=	Libft
 INC				=	inc
 OBJ_DIR			=	obj
 HEADER			=	$(INC)
-LIBFT_HEADER	=	$(LIBFT_DIR)/$(INC)/ibft.h
+LIBFT_HEADER	=	$(LIBFT_DIR)/$(INC)/libft.h
 LIBFT_LIB		=	libft.a
 
 CC				=	gcc
 CFLAGS			=	-Wall -Wextra -Werror
 LDFLAGS			=	-L./mlx -lmlx -framework OpenGL -framework AppKit
 
-SRC				=	main.c			\
-					get_next_line.c	\
-					init.c			\
-					pacman.c		\
-					utils.c			\
-					render.c		\
-					end.c			\
-					gif.c			\
-					mallocs.c		\
-					enemy.c			\
-					init_imgs.c		\
-					utils2.c		\
-					utils3.c		\
-					utils4.c		\
-					utils5.c		\
-					free.c			\
+SRC				=	core/main.c			\
+					core/init.c			\
+					core/end.c			\
+					core/free.c			\
+					entities/pacman.c	\
+					entities/enemy.c	\
+					entities/gif.c		\
+					entities/collision.c\
+					map/map_parsing.c	\
+					map/map_validation.c\
+					map/map_checks.c	\
+					map/pathfinding.c	\
+					render/render.c		\
+					render/init_imgs.c	\
+					utils/mallocs.c		\
+					utils/get_next_line.c\
 
 OBJ				=	$(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 LIBFT_FILE		:=	$(LIBFT_DIR)/$(LIBFT_LIB)
@@ -98,6 +98,10 @@ fclean:				clean
 					@echo "$(RED)All executables deleted!$(END)"
 					@sleep 0.5
 					@clear
+
+re:					fclean all
+
+.PHONY:				all clean fclean re libft minilibx
 					
 re:					fclean all
 

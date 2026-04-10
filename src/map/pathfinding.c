@@ -27,7 +27,7 @@ void	pacman_gif_utils(t_data *data, int elapsed_time, struct timeval now)
 	}
 }
 
-char	**array_dup(char **array)
+static char	**array_dup(char **array)
 {
 	char	**new;
 	int		i;
@@ -37,28 +37,48 @@ char	**array_dup(char **array)
 		i++;
 	new = malloc(sizeof(char *) * (i + 1));
 	if (!new)
-		return NULL;
+		return (NULL);
 	i = 0;
 	while (array[i])
 	{
 		new[i] = ft_strdup(array[i]);
 		i++;
 	}
-	new[i] = 0;
+	new[i] = NULL;
 	return (new);
 }
 
-int	can_p(char **lines, int x, int y, int dir)
+static void	free_array_dup(char **array)
+{
+	int	i;
+
+	if (!array)
+		return ;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
+static int	can_p(char **lines, int x, int y, int dir)
 {
 	char	**map_dup;
+	int		result;
 
 	if (dir == 0)
 	{
 		map_dup = array_dup(lines);
-		dir = can_p(map_dup, x, y, 5);
-		return (dir);
+		if (!map_dup)
+			return (0);
+		result = can_p(map_dup, x, y, 5);
+		free_array_dup(map_dup);
+		return (result);
 	}
-	if (x < 0 || y < 0 || !lines[x][y] || lines[x][y] == '1')
+	if (x < 0 || y < 0 || !lines[x] || !lines[x][y]
+		|| lines[x][y] == '1' || lines[x][y] == '\n')
 		return (0);
 	if (lines[x][y] == 'P')
 		return (1);
@@ -83,9 +103,10 @@ int	valid_path(t_data *data)
 	while (data->map->lines[i])
 	{
 		j = 0;
-		while (data->map->lines[i][j])
+		while (data->map->lines[i][j] && data->map->lines[i][j] != '\n')
 		{
-			if ((data->map->lines[i][j] == 'C' || data->map->lines[i][j] == 'E')
+			if ((data->map->lines[i][j] == 'C'
+					|| data->map->lines[i][j] == 'E')
 				&& !can_p(data->map->lines, i, j, 0))
 				return (0);
 			j++;
@@ -95,13 +116,14 @@ int	valid_path(t_data *data)
 	return (1);
 }
 
-void display_movements(t_data *data)
+void	display_movements(t_data *data)
 {
-    char *str;
+	char	*str;
 
-    str = ft_itoa(data->movements); // You can use your own implementation of itoa
-	//mlx_string_set_font(data->mlx, data->win, "monospace");
-    mlx_string_put(data->mlx, data->win, 10, 10, BLACK_PIXEL, "Movements: ");
-    mlx_string_put(data->mlx, data->win, 10 + 100, 10, BLACK_PIXEL, str);
-    free(str);
+	str = ft_itoa(data->movements);
+	if (!str)
+		return ;
+	mlx_string_put(data->mlx, data->win, 10, 10, BLACK_PIXEL, "Movements: ");
+	mlx_string_put(data->mlx, data->win, 110, 10, BLACK_PIXEL, str);
+	free(str);
 }

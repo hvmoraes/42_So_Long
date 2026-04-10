@@ -15,19 +15,17 @@
 void	enemy_mallocs(t_data *data)
 {
 	int	i;
-	int	size;
 
 	i = 0;
-	size = nbr_enemies(data);
-	data->enemy = malloc(size * sizeof(t_enemy *));
+	data->enemy = malloc(data->num_enemies * sizeof(t_enemy *));
 	if (!data->enemy)
 		return ;
-	while (i < size)
+	while (i < data->num_enemies)
 	{
 		data->enemy[i] = malloc(sizeof(t_enemy));
 		if (!data->enemy[i])
 			return ;
-		data->enemy[i]->img_file = malloc(2 * sizeof(void *));
+		data->enemy[i]->img_file = malloc(ENEMY_IMG_COUNT * sizeof(void *));
 		if (!data->enemy[i]->img_file)
 			return ;
 		i++;
@@ -37,14 +35,12 @@ void	enemy_mallocs(t_data *data)
 void	consumable_mallocs(t_data *data)
 {
 	int	i;
-	int	size;
 
 	i = 0;
-	size = nbr_consumables(data);
-	data->consumable = malloc(size * sizeof(t_consumable *));
+	data->consumable = malloc(data->num_consumables * sizeof(t_consumable *));
 	if (!data->consumable)
 		return ;
-	while (i < size)
+	while (i < data->num_consumables)
 	{
 		data->consumable[i] = malloc(sizeof(t_consumable));
 		if (!data->consumable[i])
@@ -63,10 +59,12 @@ void	exit_mallocs(t_data *data)
 void	pacman_mallocs(t_data *data)
 {
 	data->pacman = malloc(sizeof(t_pacman));
-	data->pacman->img_file = malloc(5 * sizeof(void *));
+	if (!data->pacman)
+		return ;
+	data->pacman->img_file = malloc(PACMAN_IMG_COUNT * sizeof(void *));
+	if (!data->pacman->img_file)
+		return ;
 	enemy_mallocs(data);
 	consumable_mallocs(data);
 	exit_mallocs(data);
-	if (!data->pacman || !data->pacman->img_file)
-		return ;
 }

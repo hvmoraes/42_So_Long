@@ -14,47 +14,34 @@
 
 void	init_images_pacman(t_data *data, int width, int height)
 {
-	char	**imgs;
+	char	*imgs[PACMAN_IMG_COUNT];
 	int		i;
 
 	i = 0;
-	imgs = malloc(5 * sizeof(char *));
-	imgs[0] = "/Users/henrique/Documents/"
-		"42 school/So_Long/Images/pacman_right.xpm";
-	imgs[1] = "/Users/henrique/Documents/"
-		"42 school/So_Long/Images/pacman_left.xpm";
-	imgs[2] = "/Users/henrique/Documents/"
-		"42 school/So_Long/Images/pacman_up.xpm";
-	imgs[3] = "/Users/henrique/Documents/"
-		"42 school/So_Long/Images/pacman_down.xpm";
-	imgs[4] = "/Users/henrique/Documents/"
-		"42 school/So_Long/Images/pacman_close.xpm";
-	while (i < 5)
+	imgs[0] = IMG_PACMAN_RIGHT;
+	imgs[1] = IMG_PACMAN_LEFT;
+	imgs[2] = IMG_PACMAN_UP;
+	imgs[3] = IMG_PACMAN_DOWN;
+	imgs[4] = IMG_PACMAN_CLOSE;
+	while (i < PACMAN_IMG_COUNT)
 	{
 		data->pacman->img_file[i]
 			= mlx_xpm_file_to_image(data->mlx, imgs[i], &width, &height);
 		i++;
 	}
-	free(imgs);
 }
 
 void	init_images_enemy(t_data *data, int width, int height)
 {
-	char	*img0;
-	char	*img1;
 	int		i;
 
 	i = 0;
-	img0 = "/Users/henrique/Documents/"
-		"42 school/So_Long/Images/green_enemy1.xpm";
-	img1 = "/Users/henrique/Documents/"
-		"42 school/So_Long/Images/green_enemy2.xpm";
-	while (i < nbr_enemies(data))
+	while (i < data->num_enemies)
 	{
 		data->enemy[i]->img_file[0]
-			= mlx_xpm_file_to_image(data->mlx, img0, &width, &height);
+			= mlx_xpm_file_to_image(data->mlx, IMG_ENEMY_1, &width, &height);
 		data->enemy[i]->img_file[1]
-			= mlx_xpm_file_to_image(data->mlx, img1, &width, &height);
+			= mlx_xpm_file_to_image(data->mlx, IMG_ENEMY_2, &width, &height);
 		i++;
 	}
 }

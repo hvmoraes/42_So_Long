@@ -18,8 +18,8 @@ int	closed_map(t_data *data)
 	int	map_width;
 	int	map_height;
 
-	map_height = data->map->height / 50;
-	map_width = data->map->width / 50;
+	map_height = data->map->height / TILE_SIZE;
+	map_width = data->map->width / TILE_SIZE;
 	i = 0;
 	while (i < map_width && data->map->lines[0][i] != '\n')
 	{

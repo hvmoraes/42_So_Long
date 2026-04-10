@@ -1,0 +1,18 @@
+# Object files
+*.o
+*.d
+obj/
+
+# Binary
+so_long
+
+# MLX build artifacts
+mlx/*.o
+mlx/libmlx.a
+
+# Libft build artifacts
+Libft/*.o
+Libft/*.a
+
+# macOS
+.DS_Store

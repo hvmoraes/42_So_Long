@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hcorrea- <hcorrea-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:49:24 by hcorrea-          #+#    #+#             */
-/*   Updated: 2023/03/10 12:15:58 by hcorrea-         ###   ########.fr       */
+/*   Updated: 2026/04/10 13:33:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@ void	draw_square(int x, int y, int color, t_data *data)
 	int	j;
 
 	i = 0;
-	if (x + 50 > data->map->width || y + 50 > data->map->height)
+	if (x + TILE_SIZE > data->map->width
+		|| y + TILE_SIZE > data->map->height)
 		return ;
-	while (i < 50)
+	while (i < TILE_SIZE)
 	{
 		j = 0;
-		while (j < 50)
+		while (j < TILE_SIZE)
 		{
 			put_pixel(data, x + i, y + j, color);
 			j++;
@@ -34,8 +35,8 @@ void	draw_square(int x, int y, int color, t_data *data)
 
 void	render_pacman(t_data *data, int i, int j)
 {
-	data->pacman->pixel_pos.x = i * 50;
-	data->pacman->pixel_pos.y = j * 50;
+	data->pacman->pixel_pos.x = i * TILE_SIZE;
+	data->pacman->pixel_pos.y = j * TILE_SIZE;
 	data->pacman->curr_pos.x = i;
 	data->pacman->curr_pos.y = j;
 	data->pacman->flag = 1;
@@ -43,8 +44,8 @@ void	render_pacman(t_data *data, int i, int j)
 
 void	render_enemy(t_data *data, int x, int y, int count)
 {
-	data->enemy[count]->pixel_pos.x = x * 50;
-	data->enemy[count]->pixel_pos.y = y * 50;
+	data->enemy[count]->pixel_pos.x = x * TILE_SIZE;
+	data->enemy[count]->pixel_pos.y = y * TILE_SIZE;
 	data->enemy[count]->curr_pos.x = x;
 	data->enemy[count]->curr_pos.y = y;
 	data->enemy[count]->flag = 1;
@@ -52,8 +53,8 @@ void	render_enemy(t_data *data, int x, int y, int count)
 
 void	render_consumable(t_data *data, int x, int y, int count)
 {
-	data->consumable[count]->pixel_pos.x = x * 50;
-	data->consumable[count]->pixel_pos.y = y * 50;
+	data->consumable[count]->pixel_pos.x = x * TILE_SIZE;
+	data->consumable[count]->pixel_pos.y = y * TILE_SIZE;
 	data->consumable[count]->curr_pos.x = x;
 	data->consumable[count]->curr_pos.y = y;
 	data->consumable[count]->flag = 1;

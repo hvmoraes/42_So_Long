@@ -14,28 +14,7 @@
 
 int	nbr_enemies_consumables_extra(t_data *data)
 {
-	int	i;
-	int	j;
-	int	c;
-	int	x;
-
-	i = 0;
-	x = 0;
-	c = 0;
-	while (data->map->lines[i])
-	{
-		j = 0;
-		while (data->map->lines[i][j])
-		{
-			if (data->map->lines[i][j] == 'X')
-				x++;
-			else if (data->map->lines[i][j] == 'C')
-				c++;
-			j++;
-		}
-		i++;
-	}
-	if (x == 0 || c == 0)
+	if (data->num_enemies == 0 || data->num_consumables == 0)
 		return (0);
 	return (1);
 }
@@ -53,7 +32,7 @@ int	nbr_player_exit(t_data *data)
 	while (data->map->lines[++i])
 	{
 		j = -1;
-		while (data->map->lines[i][++j])
+		while (data->map->lines[i][++j] && data->map->lines[i][j] != '\n')
 		{
 			if (data->map->lines[i][j] == 'P')
 				p++;
@@ -84,8 +63,8 @@ void	valid_map(t_data *data)
 
 void	render_exit(t_data *data, int i, int j)
 {
-	data->exit->pixel_pos.x = i * 50;
-	data->exit->pixel_pos.y = j * 50;
+	data->exit->pixel_pos.x = i * TILE_SIZE;
+	data->exit->pixel_pos.y = j * TILE_SIZE;
 	data->exit->curr_pos.x = i;
 	data->exit->curr_pos.y = j;
 	data->exit->flag = 1;
@@ -96,7 +75,7 @@ void	set_enemies_vulnerable(t_data *data, int x)
 	int	i;
 
 	i = 0;
-	while (i < nbr_enemies(data))
+	while (i < data->num_enemies)
 	{
 		if (x == 0)
 			data->enemy[i]->state = 0;

@@ -14,20 +14,22 @@
 
 int	key_press(int keycode, t_data *data)
 {
-	if (keycode == 53)
+	if (keycode == KEY_ESC)
 	{
 		printf("Window closed!\n");
+		clear_all(data);
 		exit(0);
 	}
-	else if (keycode == 0 || keycode == 1 || keycode == 2 || keycode == 13)
+	else if (keycode == KEY_A || keycode == KEY_S
+		|| keycode == KEY_D || keycode == KEY_W)
 		move_character(keycode, data);
 	return (1);
 }
 
 int	key_release(int keycode, t_data *data)
 {
-	if (keycode == 53)
-		key_press(53, data);
+	if (keycode == KEY_ESC)
+		key_press(KEY_ESC, data);
 	return (0);
 }
 
@@ -35,10 +37,19 @@ void	general_init(t_data *data)
 {
 	char	**lines;
 
-	lines = malloc(100 * sizeof(char *));
+	lines = malloc(MAX_MAP_LINES * sizeof(char *));
+	if (!lines)
+	{
+		free(data->map);
+		free(data);
+		exit(1);
+	}
+	ft_bzero(lines, MAX_MAP_LINES * sizeof(char *));
 	data->map->lines = lines;
 	data->movements = 0;
+	data->nbr_enemies_killed = 0;
 	get_size(data);
+	count_entities(data);
 	valid_map(data);
 	pacman_mallocs(data);
 	data->mlx = mlx_init();
@@ -58,14 +69,24 @@ int	main(int argc, char **argv)
 {
 	t_data	*data;
 
-	(void)argv;
 	if (argc == 2)
 	{
 		data = malloc(sizeof(t_data));
+		if (!data)
+			return (1);
 		data->map = malloc(sizeof(t_map));
+		if (!data->map)
+		{
+			free(data);
+			return (1);
+		}
 		data->map->fd = open(argv[1], O_RDONLY);
-		if (!data || !data->map || data->map->fd == -1)
-			return (0);
+		if (data->map->fd == -1)
+		{
+			free(data->map);
+			free(data);
+			return (1);
+		}
 		general_init(data);
 		mlx_loop_hook(data->mlx, gif, data);
 		mlx_hook(data->win, 2, 0, key_press, data);
@@ -74,8 +95,8 @@ int	main(int argc, char **argv)
 		mlx_loop(data->mlx);
 	}
 	else if (argc > 2)
-		printf("Too many arguments!\n");
+		printf("Error\nToo many arguments!\n");
 	else
-		printf("Too few arguments!\n");
+		printf("Error\nUsage: ./so_long <map_file.ber>\n");
 	return (0);
 }

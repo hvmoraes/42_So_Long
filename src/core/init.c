@@ -18,10 +18,10 @@ void	init_enemy(t_data *data)
 	int	height;
 	int	i;
 
-	width = 50;
-	height = 50;
+	width = TILE_SIZE;
+	height = TILE_SIZE;
 	i = 0;
-	while (i < nbr_enemies(data))
+	while (i < data->num_enemies)
 	{
 		data->enemy[i]->mouth_open = false;
 		data->enemy[i]->print = 1;
@@ -36,8 +36,8 @@ void	init_pacman(t_data *data)
 	int	width;
 	int	height;
 
-	width = 50;
-	height = 50;
+	width = TILE_SIZE;
+	height = TILE_SIZE;
 	data->pacman->mouth_open = false;
 	data->pacman->nbr_consumables = 0;
 	init_images_pacman(data, width, height);
@@ -48,7 +48,7 @@ void	init_consumable(t_data *data)
 	int	i;
 
 	i = 0;
-	while (i < nbr_consumables(data))
+	while (i < data->num_consumables)
 	{
 		data->consumable[i]->print = 1;
 		i++;
